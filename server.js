@@ -77,13 +77,23 @@ client.on("message", message => {
 });
 
 ///كود الانذارات 
+/*
+لازم تسوي ملف اسمه warns.json 
+معلومة لو الشخص تعدي ال 3 وارنات بيصيرله بان
+الاوامر
+لاعطاء وارن لشخص warn @user
+لمسح وارنات شخص delwarns @user
+*/
+
+
+
 let warns = JSON.parse(fs.readFileSync("./warns.json", "utf8"));
- 
+
 client.on("message", function(message) {
   let user = message.mentions.users.first();
   if (!message.channel.guild) return;
- 
- 
+  
+
   let args = message.content.split(" ");
 let command = args[0]
 if(command === prefix + "warn"){
@@ -116,11 +126,11 @@ let warn3 = warns[message.guild.id][user.id].warn3;
 let warn4 = warns[message.guild.id][user.id].warn4;
   let member = warns[message.guild.id][user.id];
    if(!user)return message.channel.send("Mention Someone")
-  if(user.id === message.author.id)return message.channel.send("**You Cant Warn Yourself**")
+  if(user.id === message.author.id)return message.channel.send("You Cant Warn Yourself")
  if (warn1 === "none"){
    if(warn1 === "warned")return;
 warns[message.guild.id][user.id].warn = "warned"
-    message.channel.send("**Done That User Has Got The `1` Warn**")
+    message.channel.send("Done That User Has Got The `1` Warn")
   }else if(warn2 === "none"){
 if(warn1 === "none")return;
 if(warn2 === "warned")return;
@@ -128,7 +138,7 @@ warns[message.guild.id][user.id].warn2 = "warned"
 fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
   if (err) throw err;
 });
-    message.channel.send("**Done That User Has Got The `2` Warn**")
+    message.channel.send("Done That User Has Got The `2` Warn")
   }else if(warn3 === "none"){
     if(warn1 === "none")return;
     if(warn2 === "none")return;
@@ -154,7 +164,7 @@ fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
       message.guild.member(user).ban("Reached The Limit Of Warns", user);
       message.channel.send("**User Has Banned Reason `Reached Limit Of Warns`**")
   }
- 
+
 }else if(command === `${prefix}delwarns`){
 if(!user)return message.channel.send("**Sorry Missing User/Mention**")
   warns[message.guild.id][user.id] = {
@@ -168,7 +178,7 @@ if(!user)return message.channel.send("**Sorry Missing User/Mention**")
         });
         message.channel.send("Done Deleted All Warns For This User")
 }
- 
+
 });
 
 ////كود تيكت
