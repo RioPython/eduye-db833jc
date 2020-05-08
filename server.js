@@ -1046,7 +1046,7 @@ client.on("message", async message => {
   var duration; //HactorMC
   var gMembers;
   var filter = m => m.author.id === message.author.id;
-  if (message.content.startsWith(prefix + "giy")) {
+  if (message.content.startsWith(prefix + "givy")) {
     //return message.channel.send('**في مشكله ببعض الاساسيات من فضلك انتظر شوي**');
     if (!message.guild.member(message.author).hasPermission("MANAGE_GUILD"))
       return message.channel.send(
