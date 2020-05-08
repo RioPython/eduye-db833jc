@@ -76,6 +76,101 @@ client.on("message", message => {
   }
 });
 
+///كود الانذارات 
+let warns = JSON.parse(fs.readFileSync("./warns.json", "utf8"));
+ 
+client.on("message", function(message) {
+  let user = message.mentions.users.first();
+  if (!message.channel.guild) return;
+ 
+ 
+  let args = message.content.split(" ");
+let command = args[0]
+if(command === prefix + "warn"){
+  if (!message.member.hasPermission("MANAGE_GUILD"))
+      return message.channel.send(
+        "**Sorry But You Dont Have Permission** `MANAGE_GUILD`"
+      );
+   if(warns[message.guild.id] == undefined) {
+      warns[message.guild.id] = {
+  bannedusers: "none"
+      }
+      fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+        if (err) throw err;
+      });
+    }
+    if(warns[message.guild.id][user.id] == undefined) {
+      warns[message.guild.id][user.id] = {
+  warn: "none",
+  warn2: "none",
+  warn3: "none",
+  warn4: "none"
+      }
+      fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+        if (err) throw err;
+      });
+    }
+    let warn1 = warns[message.guild.id][user.id].warn;
+let warn2 = warns[message.guild.id][user.id].warn2;
+let warn3 = warns[message.guild.id][user.id].warn3;
+let warn4 = warns[message.guild.id][user.id].warn4;
+  let member = warns[message.guild.id][user.id];
+   if(!user)return message.channel.send("Mention Someone")
+  if(user.id === message.author.id)return message.channel.send("**You Cant Warn Yourself**")
+ if (warn1 === "none"){
+   if(warn1 === "warned")return;
+warns[message.guild.id][user.id].warn = "warned"
+    message.channel.send("**Done That User Has Got The `1` Warn**")
+  }else if(warn2 === "none"){
+if(warn1 === "none")return;
+if(warn2 === "warned")return;
+warns[message.guild.id][user.id].warn2 = "warned"
+fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+  if (err) throw err;
+});
+    message.channel.send("**Done That User Has Got The `2` Warn**")
+  }else if(warn3 === "none"){
+    if(warn1 === "none")return;
+    if(warn2 === "none")return;
+    if(warn3 === "warned")return;
+    warns[message.guild.id][user.id].warn3 = "warned"
+    fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+      if (err) throw err;
+    });
+        message.channel.send("Done That User Has Got The `3` Warn Any Warn After That One Will Get That User Banned")
+  }else if(warn4 === "none"){
+    if(warn1 === "none")return;
+    if(warn2 === "none")return;
+    if(warn3 === "none")return;
+      warns[message.guild.id][user.id] = {
+    warn: "none",
+    warn2: "none",
+    warn3: "none",
+    warn4: "none"
+        }
+        fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+          if (err) throw err;
+        });
+      message.guild.member(user).ban("Reached The Limit Of Warns", user);
+      message.channel.send("**User Has Banned Reason `Reached Limit Of Warns`**")
+  }
+ 
+}else if(command === `${prefix}delwarns`){
+if(!user)return message.channel.send("**Sorry Missing User/Mention**")
+  warns[message.guild.id][user.id] = {
+    warn: "none",
+    warn2: "none",
+    warn3: "none",
+    warn4: "none"
+        }
+        fs.writeFile("./warns.json", JSON.stringify(warns), function(err) {
+          if (err) throw err;
+        });
+        message.channel.send("Done Deleted All Warns For This User")
+}
+ 
+});
+
 ////كود تيكت
 client.on("message", message => {
   if (message.content.startsWith(prefix + "new")) {
@@ -951,7 +1046,7 @@ client.on("message", async message => {
   var duration; //HactorMC
   var gMembers;
   var filter = m => m.author.id === message.author.id;
-  if (message.content.startsWith(prefix + "giveaway")) {
+  if (message.content.startsWith(prefix + "giy")) {
     //return message.channel.send('**في مشكله ببعض الاساسيات من فضلك انتظر شوي**');
     if (!message.guild.member(message.author).hasPermission("MANAGE_GUILD"))
       return message.channel.send(
@@ -976,7 +1071,7 @@ client.on("message", async message => {
               );
             room = collected.first().content;
             collected.first().delete();
-            msgg.edit("**اكتب مدة القيف اواي بالدقائق**").then(msg => {
+            msgg.edit("**اكتب مدة السحب بالدقائق**").then(msg => {
               message.channel
                 .awaitMessages(filter, {
                   max: 1, //HactorMC
@@ -992,7 +1087,7 @@ client.on("message", async message => {
                   collected.first().delete();
                   msgg
                     .edit(
-                      ":eight_pointed_black_star:| **اكتب على ماذا تريد القيف اواي**"
+                      ":eight_pointed_black_star:| **اكتب على ماذا تريد السحب **"
                     )
                     .then(msg => {
                       message.channel
